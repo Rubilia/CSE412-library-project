@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Work Details{% endblock %}
+{% block content %}
+<div class="container">
+  {% if work %}
+    <div class="mb-4">
+      <h1 class="display-5 fw-bold">{{ work.title }}{% if work.subtitle %}: {{ work.subtitle }}{% endif %}</h1>
+      
+      <p><strong>First Published:</strong> {{ work.first_publish_date }}</p>
+      
+      {% if work.description %}
+      <p><strong>Description:</strong> {{ work.description }}</p>
+      {% endif %}
+      
+      {% if work.notes %}
+      <p><strong>Notes:</strong> {{ work.notes }}</p>
+      {% endif %}
+      
+      <p><strong>Cover Edition:</strong>
+      {% if cover_edition %}
+        <a href="#editions-section">{{ cover_edition.title }}</a>
+      {% else %}
+        No cover edition available
+      {% endif %}
+      </p>
+      
+      {% if work.first_sentence %}
+      <p><strong>First Sentence:</strong> "{{ work.first_sentence }}"</p>
+      {% endif %}
+      
+      {% if subjects and subjects|length > 0 %}
+      <p><strong>Subjects:</strong>
+        {% for subj in subjects %}
+          <span class="badge bg-secondary">{{ subj }}</span>
+        {% endfor %}
+      </p>
+      {% endif %}
+      
+      {% if languages and languages|length > 0 %}
+      <p><strong>Languages:</strong>
+        {% for lang in languages %}
+          <span class="badge bg-info text-dark">{{ lang }}</span>
+        {% endfor %}
+      </p>
+      {% endif %}
+    </div>
+    <hr>
+    <h3 class="mb-3">Authors</h3>
+    <div class="row g-4 mb-5">
+      {% for author in authors %}
+      <div class="col-md-4">
+        <div class="card shadow-sm hover-card">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('main.author_detail', author_id=author.id) }}" class="stretched-link text-decoration-none">{{ author.name }}</a></h5>
+            <p><strong>Birth Date:</strong> {{ author.birth_date }}{% if author.death_date %}, <strong>Death Date:</strong> {{ author.death_date }}{% endif %}</p>
+            {% if author.bio %}
+            <p><strong>Bio:</strong> {{ author.bio }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <hr id="editions-section">
+    <h3 class="mb-3">Editions</h3>
+    <div class="row g-4">
+      {% for ed in editions %}
+      <div class="col-md-4">
+        <div class="card shadow-sm hover-card">
+          <div class="card-body">
+            <h5 class="card-title">{{ ed.title }}</h5>
+            {% if ed.subtitle %}<p><strong>Subtitle:</strong> {{ ed.subtitle }}</p>{% endif %}
+            <p><strong>Publish Date:</strong> {{ ed.publish_date }}</p>
+            <p><strong>Number of Pages:</strong> {{ ed.number_of_pages }}</p>
+            <p><strong>ISBN-13:</strong> {{ ed.isbn_13 }}{% if ed.isbn_10 %}, <strong>ISBN-10:</strong> {{ ed.isbn_10 }}{% endif %}</p>
+            {% if ed.cover_pic_id %}<p><strong>Cover Pic ID:</strong> {{ ed.cover_pic_id }}</p>{% endif %}
+            {% if ed.publish_country %}<p><strong>Publish Country:</strong> {{ ed.publish_country }}</p>{% endif %}
+            {% if ed.first_sentence %}<p><strong>First Sentence:</strong> "{{ ed.first_sentence }}"</p>{% endif %}
+            {% if ed.title_prefix %}<p><strong>Title Prefix:</strong> {{ ed.title_prefix }}</p>{% endif %}
+            {% if ed.weight %}<p><strong>Weight:</strong> {{ ed.weight }} kg</p>{% endif %}
+            {% if ed.description %}<p><strong>Description:</strong> {{ ed.description }}</p>{% endif %}
+            {% if ed.notes %}<p><strong>Notes:</strong> {{ ed.notes }}</p>{% endif %}
+
+            {% if ed.genres and ed.genres|length > 0 %}
+            <p><strong>Genres:</strong>
+              {% for g in ed.genres %}
+                <span class="badge bg-success">{{ g }}</span>
+              {% endfor %}
+            </p>
+            {% endif %}
+            {% if ed.languages and ed.languages|length > 0 %}
+            <p><strong>Languages:</strong>
+              {% for lng in ed.languages %}
+                <span class="badge bg-warning text-dark">{{ lng }}</span>
+              {% endfor %}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% if editions|length == 0 %}
+      <p class="text-muted">No editions available.</p>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      Work not found.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

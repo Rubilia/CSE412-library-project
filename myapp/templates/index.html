@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}CSE 412 Library project{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="p-5 mb-4 bg-light rounded-3 hero-section">
+    <div class="container py-5">
+      <h1 class="display-5 fw-bold">Welcome to the CSE 412 Library project</h1>
+      <p class="col-md-8 fs-4">Discover a vast collection of authors, works, and editions. Explore our extensive library to find your next great read.</p>
+      <div class="d-flex gap-3">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('main.search') }}">Start Searching</a>
+        <a class="btn btn-outline-primary btn-lg" href="{{ url_for('main.random_work') }}">Random Book</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mb-4">Random Books</h2>
+  <div id="works-container">
+    <div class="row g-4 mb-4">
+      {% for w in works[0:3] %}
+      <div class="col-md-4 card-container">
+        <div class="card shadow-sm hover-card">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('main.work_detail', work_id=w.id) }}" class="stretched-link text-decoration-none">{{ w.title }}</a></h5>
+            <p class="card-text text-muted"><small>Published: {{ w.first_publish_date }}</small></p>
+            <p class="card-text">{{ w.description|truncate(80) }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row g-4 mb-5">
+      {% for w in works[3:6] %}
+      <div class="col-md-4 card-container">
+        <div class="card shadow-sm hover-card">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('main.work_detail', work_id=w.id) }}" class="stretched-link text-decoration-none">{{ w.title }}</a></h5>
+            <p class="card-text text-muted"><small>Published: {{ w.first_publish_date }}</small></p>
+            <p class="card-text">{{ w.description|truncate(80) }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <h2 class="mb-4">Random Authors</h2>
+  <div id="authors-container">
+    <div class="row g-4 mb-4">
+      {% for a in authors[0:3] %}
+      <div class="col-md-4 card-container">
+        <div class="card shadow-sm hover-card">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('main.author_detail', author_id=a.id) }}" class="stretched-link text-decoration-none">{{ a.name }}</a></h5>
+            <p class="card-text text-muted"><small>Born: {{ a.birth_date }}{% if a.death_date %}, Died: {{ a.death_date }}{% endif %}</small></p>
+            <p class="card-text">{{ a.bio|truncate(80) }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row g-4 mb-5">
+      {% for a in authors[3:6] %}
+      <div class="col-md-4 card-container">
+        <div class="card shadow-sm hover-card">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('main.author_detail', author_id=a.id) }}" class="stretched-link text-decoration-none">{{ a.name }}</a></h5>
+            <p class="card-text text-muted"><small>Born: {{ a.birth_date }}{% if a.death_date %}, Died: {{ a.death_date }}{% endif %}</small></p>
+            <p class="card-text">{{ a.bio|truncate(80) }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

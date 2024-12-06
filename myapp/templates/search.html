@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Search - CSE 412 Library project{% endblock %}
+{% block content %}
+<div class="container">
+  <h1 class="mb-4 text-center">Search the Library</h1>
+  <div class="card mb-5 shadow-sm">
+    <div class="card-body">
+      <form method="post" class="row g-3">
+        <div class="col-12 col-md-8">
+          <input type="text" name="q" class="form-control form-control-lg" placeholder="Enter your search query..." value="{{ query }}">
+        </div>
+        <div class="col-6 col-md-2">
+          <select name="search_type" class="form-select form-select-lg">
+            <option value="title" {% if search_type=='title' %}selected{% endif %}>Title</option>
+            <option value="author" {% if search_type=='author' %}selected{% endif %}>Author</option>
+            <option value="isbn" {% if search_type=='isbn' %}selected{% endif %}>ISBN</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2 d-grid">
+          <button type="submit" class="btn btn-primary btn-lg">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% if query %}
+  <h2 class="mb-4">Results for "{{ query }}"</h2>
+  {% if results %}
+    <div class="row g-4">
+      {% for item in results %}
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            {% if item.__class__.__name__ == 'Author' %}
+              <h5 class="card-title">{{ item.name }}</h5>
+              <p class="card-text text-muted"><small>Born: {{ item.birth_date }}{% if item.death_date %}, Died: {{ item.death_date }}{% endif %}</small></p>
+              <p class="card-text">{{ item.bio }}</p>
+            {% elif item.__class__.__name__ == 'Work' %}
+              <h5 class="card-title">{{ item.title }}{% if item.subtitle %}: {{ item.subtitle }}{% endif %}</h5>
+              <p class="card-text text-muted"><small>First Published: {{ item.first_publish_date }}</small></p>
+              <p class="card-text">{{ item.description }}</p>
+            {% elif item.__class__.__name__ == 'Edition' %}
+              <h5 class="card-title">{{ item.title }}</h5>
+              <p class="card-text text-muted"><small>ISBN: {{ item.isbn_13 }}</small></p>
+              <p class="card-text">Pages: {{ item.number_of_pages }}<br>Published: {{ item.publish_date }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      No results found for your query.
+    </div>
+  {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

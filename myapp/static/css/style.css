@@ -1,0 +1,50 @@
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  .hero-section {
+    background: linear-gradient(to right, #e3f2fd, #bbdefb);
+  }
+  
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+  
+  .display-5 {
+    font-weight: 700;
+  }
+  
+  /* Slide animations */
+  .slide-out {
+    animation: slideOut 0.5s forwards;
+  }
+  
+  .slide-in {
+    animation: slideIn 0.5s forwards;
+  }
+  
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity:1; }
+    to { transform: translateX(-100%); opacity:0; }
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity:0; }
+    to { transform: translateX(0); opacity:1; }
+  }
+  
+  .card-container {
+    overflow: hidden;
+  }
+  

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Author Details{% endblock %}
+{% block content %}
+<div class="container">
+  {% if author %}
+    <div class="mb-4">
+      <h1 class="display-5 fw-bold">{{ author.name }}</h1>
+      
+      {% if author.personal_name %}
+      <p><strong>Personal Name:</strong> {{ author.personal_name }}</p>
+      {% endif %}
+      
+      {% if author.eastern_order is not none %}
+      <p><strong>Eastern Order:</strong> {{ 'Yes' if author.eastern_order else 'No' }}</p>
+      {% endif %}
+      
+      {% if author.title %}
+      <p><strong>Title (honorific):</strong> {{ author.title }}</p>
+      {% endif %}
+      
+      {% if author.location %}
+      <p><strong>Location:</strong> {{ author.location }}</p>
+      {% endif %}
+      
+      {% if author.wikipedia %}
+      <p><strong>Wikipedia:</strong> <a href="{{ author.wikipedia }}" target="_blank">View Wikipedia</a></p>
+      {% endif %}
+      
+      {% if author.enumeration %}
+      <p><strong>Enumeration:</strong> {{ author.enumeration }}</p>
+      {% endif %}
+      
+      <p><strong>Birth Date:</strong> {{ author.birth_date }}{% if author.death_date %}, <strong>Death Date:</strong> {{ author.death_date }}{% endif %}</p>
+      
+      {% if author.bio %}
+      <p><strong>Bio:</strong> {{ author.bio }}</p>
+      {% endif %}
+      
+      {% if links and links|length > 0 %}
+      <p><strong>Links:</strong><br>
+        {% for url, title in links %}
+          <a href="{{ url }}" target="_blank">{{ title }}</a><br>
+        {% endfor %}
+      </p>
+      {% endif %}
+    </div>
+    <hr>
+    <h3 class="mb-3">Works by this Author</h3>
+    <div class="row g-4">
+      {% for w in works %}
+      <div class="col-md-4">
+        <div class="card shadow-sm hover-card">
+          <div class="card-body">
+            <h5 class="card-title"><a href="{{ url_for('main.work_detail', work_id=w.id) }}" class="stretched-link text-decoration-none">{{ w.title }}</a></h5>
+            <p class="card-text text-muted">
+              <small>First Published: {{ w.first_publish_date }}</small>
+            </p>
+            <p class="card-text">{{ w.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% if works|length == 0 %}
+      <p class="text-muted">No works found for this author.</p>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      Author not found.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
